@@ -53,7 +53,6 @@ python app.py
 Avant d’utiliser l’API, vous devez vous authentifier pour recevoir un token JWT, qui vous permettra d’accéder aux fonctionnalités sécurisées.
 - Route : POST /login
 - Description : Authentification avec un nom d’utilisateur et un mot de passe pour obtenir un token JWT.
-- Exemple de requête :
 - URL : http://localhost:5000/login
 - Méthode : POST
 - Body (JSON) :
@@ -76,7 +75,6 @@ Avant d’utiliser l’API, vous devez vous authentifier pour recevoir un token 
 Cette fonctionnalité vérifie si une adresse email existe réellement en se basant sur des services externes comme Hunter.io. Elle renvoie également un score de fiabilité de l’adresse.
 -  Route : POST /check-email
 - Description : Vérification de l’existence d’une adresse email.
-- Exemple de requête :
 - URL : http://localhost:5000/check-email
 - Méthode : POST
 - Headers : /
