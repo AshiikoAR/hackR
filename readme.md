@@ -1,8 +1,8 @@
 # API HackR - Alexandre RAGUIN
 
 ## Table des matières
-- (Installation de l'API HackR)[#installation-de-lapi-hackr]
-- (I - Vérification d'existence d'adresse mail)[#i---verification-dexistence-dadresse-mail]
+- [Installation de l'API HackR](#installation-de-lapi-hackr)
+- [I - Vérification d'existence d'adresse mail](#i---verification-dexistence-dadresse-mail)
 
 ---
 
