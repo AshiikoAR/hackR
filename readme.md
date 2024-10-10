@@ -2,7 +2,7 @@
 
 ## Table des matières
 - [Installation de l'API HackR](#installation-de-lapi-hackr)
-- [I - Vérification d'existence d'adresse mail](#i---verification-dexistence-dadresse-mail)
+- [I - Vérification d'existence d'adresse mail](#i---vérification-dexistence-dadresse-mail)
 
 ---
 
@@ -14,20 +14,21 @@ Prérequis
 
 Étapes d’installation
 1. Cloner le dépôt :
-‘‘‘bash
+```bash
 git clone <URL_DU_REPO>
 cd <nom_du_dossier>
-‘‘‘
+```
+
 2. Installer les dépendances :
-‘‘‘bash
+```bash
 python3 -m venv env
 source env/bin/activate  # Sur Windows: env\Scripts\activate
 pip install -r requirements.txt
-‘‘‘
+```
 3. Lancer l’application :
-‘‘‘bash
+```bash
 python app.py
-‘‘‘
+```
 
 > L’API sera maintenant disponible à l’adresse http://localhost:5000.
 
@@ -58,18 +59,18 @@ Avant d’utiliser l’API, vous devez vous authentifier pour recevoir un token 
 - URL : http://localhost:5000/login
 - Méthode : POST
 - Body (JSON) :
-‘‘‘json
+```json
 {
   "username": "admin",
   "password": "password"
 }
-‘‘‘
+```
 - Réponse (JSON) :
-‘‘‘json
+```json
 {
   "access_token": "<votre_token_jwt>"
 }
-‘‘‘
+```
 - Utilisation : Conservez ce token pour l’utiliser dans les headers de toutes vos futures requêtes.
 
 ### 2. Vérification de l’Existence d’une Adresse mail
