@@ -33,16 +33,16 @@ python app.py
 > L’API sera maintenant disponible à l’adresse https://localhost:5000.
 
 **Technologies utilisées**
-- Flask : Framework web léger pour Python.
-- Flask-JWT-Extended : Gestion de l’authentification via JWT.
-- Requests : Bibliothèque pour faire des requêtes HTTP (utilisée pour vérifier les emails via des API externes).
-- Hunter.io API : Service externe pour la vérification d’emails.
+- **Flask** : Framework web léger pour Python.
+- **Flask-JWT-Extended** : Gestion de l’authentification via JWT.
+- **Requests** : Bibliothèque pour faire des requêtes HTTP (utilisée pour vérifier les emails via des API externes).
+- **Hunter.io** : Service externe pour la vérification d’emails.
 
-**Tester avec Postman**
-
-Vous pouvez tester toutes les routes avec Postman en suivant les étapes ci-dessous :
-- Effectuer une requête POST sur /login pour obtenir un token JWT.
-- Utiliser le token dans les headers sous Authorization: Bearer <votre_token> pour accéder aux autres routes.
+> **Tester l'API avec Postman**
+>
+> Vous pouvez tester toutes les routes avec Postman, un exemple ci-dessous :
+> - Effectuer une requête POST sur /login pour obtenir un token JWT.
+> - Utiliser le token dans les headers sous Authorization: Bearer <votre_token> pour accéder aux autres routes.
 
 ---
 
