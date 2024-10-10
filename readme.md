@@ -69,61 +69,58 @@ Avant d’utiliser l’API, vous devez vous authentifier pour recevoir un token 
   "access_token": "<votre_token_jwt>"
 }
 ```
-- Utilisation : Conservez ce token pour l’utiliser dans les headers de toutes vos futures requêtes.
+> **Conseil d'utilisation** - Conservez ce token pour l’utiliser dans les headers de toutes vos futures requêtes.
 
 ### 2. Vérification de l’Existence d’une Adresse mail
 
 Cette fonctionnalité vérifie si une adresse email existe réellement en se basant sur des services externes comme Hunter.io. Elle renvoie également un score de fiabilité de l’adresse.
-
-	•	Route : POST /check-email
-	•	Description : Vérification de l’existence d’une adresse email.
-	•	Exemple de requête :
-	•	URL : http://localhost:5000/check-email
-	•	Méthode : POST
-	•	Headers :
-	•	Authorization: Bearer <votre_token_jwt>
-	•	Body (JSON) :
-
+-  Route : POST /check-email
+- Description : Vérification de l’existence d’une adresse email.
+- Exemple de requête :
+- URL : http://localhost:5000/check-email
+- Méthode : POST
+- Headers : /
+- Authorization: Bearer <votre_token_jwt>
+- Body (JSON) :
+```json
 {
   "email": "test@example.com"
 }
-
-
-	•	Réponse (JSON) :
-
+```
+- Réponse (JSON) :
+```json
 {
   "email": "test@example.com",
   "existence": "deliverable",
   "score": 92
 }
+```
+- email : Adresse mail vérifiée.
+- existence : Statut de l'adresse mail (ex. : “deliverable”, “undeliverable”, “risky”).
+- score : Score de fiabilité de l'adresse mail (0 à 100).
 
-	•	email : Adresse email vérifiée.
-	•	existence : Statut de l’email (ex. : “deliverable”, “undeliverable”, “risky”).
-	•	score : Score de fiabilité (0 à 100).
-
-3. JWT et Accès Sécurisé
+### 3. JWT et Accès Sécurisé
 
 Toutes les routes de l’API (sauf /login) sont protégées par JWT. Vous devez inclure votre token JWT dans les headers de chaque requête sous la forme suivante :
-
-	•	Headers :
-
+- Headers :
+```bash
 Authorization: Bearer <votre_token_jwt>
+```
 
+### 4. Erreur et Gestion des Réponses
 
-
-4. Erreur et Gestion des Réponses
-
-	•	Si l’adresse email est manquante dans le corps de la requête :
-	•	Réponse (JSON) :
-
+> Si l’adresse email est manquante dans le corps de la requête :
+- Réponse (JSON) :
+```json
 {
   "msg": "Adresse email manquante"
 }
+```
 
-
-	•	Si une erreur se produit lors de la vérification avec le service externe :
-	•	Réponse (JSON) :
-
+> Si une erreur se produit lors de la vérification avec le service externe :
+- Réponse (JSON) :
+```json
 {
   "msg": "Erreur lors de la vérification"
 }
+```
