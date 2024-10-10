@@ -9,8 +9,8 @@
 ## Installation de l'API HackR
 
 Prérequis
-- Python 3.x et versions ultérieurs.
-- Outils comme pip et virtualenv (gestion des environnements virtuels).
+- **Python 3.x** et versions ultérieurs.
+- Outils comme **pip** et **virtualenv** (gestion des environnements virtuels).
 
 Étapes d’installation
 1. Cloner le dépôt :
@@ -30,21 +30,19 @@ pip install -r requirements.txt
 python app.py
 ```
 
-> L’API sera maintenant disponible à l’adresse http://localhost:5000.
+> L’API sera maintenant disponible à l’adresse https://localhost:5000.
 
-Technologies utilisées
+**Technologies utilisées**
+- Flask : Framework web léger pour Python.
+- Flask-JWT-Extended : Gestion de l’authentification via JWT.
+- Requests : Bibliothèque pour faire des requêtes HTTP (utilisée pour vérifier les emails via des API externes).
+- Hunter.io API : Service externe pour la vérification d’emails.
 
-	•	Flask : Framework web léger pour Python.
-	•	Flask-JWT-Extended : Gestion de l’authentification via JWT.
-	•	Requests : Bibliothèque pour faire des requêtes HTTP (utilisée pour vérifier les emails via des API externes).
-	•	Hunter.io API : Service externe pour la vérification d’emails.
-
-Tester avec Postman
+**Tester avec Postman**
 
 Vous pouvez tester toutes les routes avec Postman en suivant les étapes ci-dessous :
-
-	1.	Effectuer une requête POST sur /login pour obtenir un token JWT.
-	2.	Utiliser le token dans les headers sous Authorization: Bearer <votre_token> pour accéder aux autres routes.
+- Effectuer une requête POST sur /login pour obtenir un token JWT.
+- Utiliser le token dans les headers sous Authorization: Bearer <votre_token> pour accéder aux autres routes.
 
 ---
 
