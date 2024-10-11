@@ -116,7 +116,7 @@ Cette fonctionnalité vérifie si une adresse email existe réellement en se bas
 > existence : Statut de l'adresse mail (ex. : “deliverable”, “undeliverable”, “risky”).
 > score : Score de fiabilité de l'adresse mail (0 à 100).
 
-### 2. Erreurs et Gestion des Réponses
+### 2. Erreurs et Gestion des Réponses n°1
 
 > Si l’adresse email est manquante dans le corps de la requête :
 - Réponse (JSON) :
@@ -164,7 +164,7 @@ Cette fonctionnalité permet de vérifier si le mot de passe fait partie de la l
 ```
 > msg : Renvoie si le mot de passe à été trouvé (ou non = sécurisé) dans la liste des mots de passe courants.
 
-### 2. Erreurs et Gestion des Réponses
+### 2. Erreurs et Gestion des Réponses n°2
 
 > Si le fichier ".txt" contenant les mots de passe est absent du dossier du projet :
 - Réponse (JSON) :
