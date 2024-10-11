@@ -112,9 +112,9 @@ Cette fonctionnalité vérifie si une adresse email existe réellement en se bas
   "score": 92
 }
 ```
-> email : Adresse mail vérifiée.
-> existence : Statut de l'adresse mail (ex. : “deliverable”, “undeliverable”, “risky”).
-> score : Score de fiabilité de l'adresse mail (0 à 100).
+> **email** - Adresse mail vérifiée.
+> **existence** - Statut de l'adresse mail (ex. : “deliverable”, “undeliverable”, “risky”).
+> **score** - Score de fiabilité de l'adresse mail (0 à 100).
 
 ### 2. Erreurs et Gestion des Réponses n°1
 
@@ -162,7 +162,7 @@ Cette fonctionnalité permet de vérifier si le mot de passe fait partie de la l
   "msg": "Le mot de passe est sécurisé (non trouvé dans la liste des mots de passe courants)."
 }
 ```
-> msg : Renvoie si le mot de passe à été trouvé (ou non = sécurisé) dans la liste des mots de passe courants.
+> **msg** - Renvoie si le mot de passe à été trouvé (ou non = sécurisé) dans la liste des mots de passe courants.
 
 ### 2. Erreurs et Gestion des Réponses n°2
 
@@ -174,7 +174,7 @@ Cette fonctionnalité permet de vérifier si le mot de passe fait partie de la l
 }
 ```
 
-> Si ul'utilisateur a oublié de renseigner un mdp :
+> Si l'utilisateur a oublié de renseigner un mdp :
 - Réponse (JSON) :
 ```json
 {
