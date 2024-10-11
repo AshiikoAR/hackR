@@ -110,9 +110,9 @@ Cette fonctionnalité vérifie si une adresse email existe réellement en se bas
   "score": 92
 }
 ```
-- email : Adresse mail vérifiée.
-- existence : Statut de l'adresse mail (ex. : “deliverable”, “undeliverable”, “risky”).
-- score : Score de fiabilité de l'adresse mail (0 à 100).
+> email : Adresse mail vérifiée.
+> existence : Statut de l'adresse mail (ex. : “deliverable”, “undeliverable”, “risky”).
+> score : Score de fiabilité de l'adresse mail (0 à 100).
 
 ### 2. Erreurs et Gestion des Réponses
 
@@ -132,8 +132,9 @@ Cette fonctionnalité vérifie si une adresse email existe réellement en se bas
 }
 ```
 
-### III - Liste des mots de passe courants
+## III - Liste des mots de passe courants
 
+### Code de recherche de mot de passe
 Cette fonctionnalité permet de vérifier si le mot de passe fait partie de la liste des 10k passwords les plus communs (à partir du fichier "**10k-most-common.txt**").
 -  Route : POST /check-password
 - Description : Vérification de l’existence d’une adresse email.
@@ -150,11 +151,31 @@ Cette fonctionnalité permet de vérifier si le mot de passe fait partie de la l
 - Réponse (JSON) :
 ```json
 {
-  "email": "test@example.com",
-  "existence": "deliverable",
-  "score": 92
+  "msg": "Le mot de passe est dans la liste des mots de passe les plus courants."
 }
 ```
-- email : Adresse mail vérifiée.
-- existence : Statut de l'adresse mail (ex. : “deliverable”, “undeliverable”, “risky”).
-- score : Score de fiabilité de l'adresse mail (0 à 100).
+**OU**
+```json
+{
+  "msg": "Le mot de passe est sécurisé (non trouvé dans la liste des mots de passe courants)."
+}
+```
+> msg : Renvoie si le mot de passe à été trouvé (ou non = sécurisé) dans la liste des mots de passe courants.
+
+### 2. Erreurs et Gestion des Réponses
+
+> Si le fichier ".txt" contenant les mots de passe est absent du dossier du projet :
+- Réponse (JSON) :
+```json
+{
+  "msg": "Fichier des mots de passe courants introuvable"
+}
+```
+
+> Si ul'utilisateur a oublié de renseigner un mdp :
+- Réponse (JSON) :
+```json
+{
+  "msg": "Mot de passe manquant"
+}
+```
