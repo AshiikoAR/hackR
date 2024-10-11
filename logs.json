@@ -1,0 +1,57 @@
+[
+    {
+        "user": "admin",
+        "action": "login",
+        "details": ""
+    },
+    {
+        "user": "admin",
+        "action": "check-password",
+        "details": "Mot de passe courant"
+    },
+    {
+        "user": "admin",
+        "action": "login",
+        "details": ""
+    },
+    {
+        "user": "user",
+        "action": "login",
+        "details": ""
+    },
+    {
+        "user": "user",
+        "action": "login",
+        "details": ""
+    },
+    {
+        "user": "admin",
+        "action": "login",
+        "details": ""
+    },
+    {
+        "user": "user",
+        "action": "login",
+        "details": ""
+    },
+    {
+        "user": "user",
+        "action": "login",
+        "details": ""
+    },
+    {
+        "user": "user",
+        "action": "login",
+        "details": ""
+    },
+    {
+        "user": "admin",
+        "action": "login",
+        "details": ""
+    },
+    {
+        "user": "admin",
+        "action": "check-password",
+        "details": "Mot de passe courant"
+    }
+]
