@@ -2,8 +2,12 @@
 
 ## Table des matières
 - [Installation de l'API HackR](#installation-de-lapi-hackr)
-- [I - Authentification - Obtenir un Token JWT](#i---authentification---obtenir-un-token-jwt)
+- [I - Authentification](#i---authentification)
+    - [1. Obtenir un Token JWT](#1--obtenir-un-token-jwt)
+    - [2. Accès Sécurisé](#2--accès-sécurisé)
 - [II - Vérification d'existence d'adresse mail](#ii---vérification-dexistence-dadresse-mail)
+    - [1. Code de vérification de l'adresse mail](#1--code-de-vérification-de-l-adresse-mail)
+    - [2. Erreurs et Gestion des Réponses](#2--erreurs-et-gestion-des-réponses)
 - [III - Liste des mots de passe courants](#iii---liste-des-mots-de-passe-courants)
 
 ---
@@ -48,7 +52,9 @@ python app.py
 
 ---
 
-## I - Authentification - Obtenir un Token JWT
+## I - Authentification 
+
+### 1. Obtenir un Token JWT
 
 Avant d’utiliser l’API, vous devez vous authentifier pour recevoir un token JWT, qui vous permettra d’accéder aux fonctionnalités sécurisées.
 - Route : POST /login
@@ -70,10 +76,19 @@ Avant d’utiliser l’API, vous devez vous authentifier pour recevoir un token 
 ```
 > **Conseil d'utilisation** - Conservez ce token pour l’utiliser dans les headers de toutes vos futures requêtes.
 
+### 2. Accès Sécurisé
+
+Toutes les routes de l’API (sauf /login) sont protégées par JWT. Vous devez inclure votre token JWT dans les headers de chaque requête sous la forme suivante :
+- Headers :
+```bash
+Authorization: Bearer <votre_token_jwt>
+```
+
 ---
 
 ## II - Vérification d'existence d'adresse mail
 
+### 1. Code de vérification de l'adresse mail
 Cette fonctionnalité vérifie si une adresse email existe réellement en se basant sur des services externes comme Hunter.io. Elle renvoie également un score de fiabilité de l’adresse.
 -  Route : POST /check-email
 - Description : Vérification de l’existence d’une adresse email.
@@ -99,15 +114,7 @@ Cette fonctionnalité vérifie si une adresse email existe réellement en se bas
 - existence : Statut de l'adresse mail (ex. : “deliverable”, “undeliverable”, “risky”).
 - score : Score de fiabilité de l'adresse mail (0 à 100).
 
-### 3. JWT et Accès Sécurisé
-
-Toutes les routes de l’API (sauf /login) sont protégées par JWT. Vous devez inclure votre token JWT dans les headers de chaque requête sous la forme suivante :
-- Headers :
-```bash
-Authorization: Bearer <votre_token_jwt>
-```
-
-### 4. Erreur et Gestion des Réponses
+### 2. Erreurs et Gestion des Réponses
 
 > Si l’adresse email est manquante dans le corps de la requête :
 - Réponse (JSON) :
@@ -125,4 +132,29 @@ Authorization: Bearer <votre_token_jwt>
 }
 ```
 
-## II - Liste des mots de passe courants
+### III - Liste des mots de passe courants
+
+Cette fonctionnalité permet de vérifier si le mot de passe fait partie de la liste des 10k passwords les plus communs (à partir du fichier "**10k-most-common.txt**").
+-  Route : POST /check-password
+- Description : Vérification de l’existence d’une adresse email.
+- URL : http://localhost:5000/check-password
+- Méthode : POST
+- Headers : /
+- Authorization: Bearer <votre_token_jwt>
+- Body (JSON) :
+```json
+{
+  "password": "123456"
+}
+```
+- Réponse (JSON) :
+```json
+{
+  "email": "test@example.com",
+  "existence": "deliverable",
+  "score": 92
+}
+```
+- email : Adresse mail vérifiée.
+- existence : Statut de l'adresse mail (ex. : “deliverable”, “undeliverable”, “risky”).
+- score : Score de fiabilité de l'adresse mail (0 à 100).
