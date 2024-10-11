@@ -2,7 +2,9 @@
 
 ## Table des matières
 - [Installation de l'API HackR](#installation-de-lapi-hackr)
-- [I - Vérification d'existence d'adresse mail](#i---vérification-dexistence-dadresse-mail)
+- [I - Authentification - Obtenir un Token JWT](#i---authentification---obtenir-un-token-jwt)
+- [II - Vérification d'existence d'adresse mail](#ii---vérification-dexistence-dadresse-mail)
+- [III - Liste des mots de passe courants](#iii---liste-des-mots-de-passe-courants)
 
 ---
 
@@ -46,9 +48,7 @@ python app.py
 
 ---
 
-## I - Vérification d'existence d'adresse mail
-
-### 1 - Authentification - Obtenir un Token JWT
+## I - Authentification - Obtenir un Token JWT
 
 Avant d’utiliser l’API, vous devez vous authentifier pour recevoir un token JWT, qui vous permettra d’accéder aux fonctionnalités sécurisées.
 - Route : POST /login
@@ -70,7 +70,9 @@ Avant d’utiliser l’API, vous devez vous authentifier pour recevoir un token 
 ```
 > **Conseil d'utilisation** - Conservez ce token pour l’utiliser dans les headers de toutes vos futures requêtes.
 
-### 2. Vérification de l’Existence d’une Adresse mail
+---
+
+## II - Vérification d'existence d'adresse mail
 
 Cette fonctionnalité vérifie si une adresse email existe réellement en se basant sur des services externes comme Hunter.io. Elle renvoie également un score de fiabilité de l’adresse.
 -  Route : POST /check-email
@@ -122,3 +124,5 @@ Authorization: Bearer <votre_token_jwt>
   "msg": "Erreur lors de la vérification"
 }
 ```
+
+## II - Liste des mots de passe courants
