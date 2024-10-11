@@ -7,8 +7,10 @@
     - [2. Accès Sécurisé](#2-accès-sécurisé)
 - [II - Vérification d'existence d'adresse mail](#ii---vérification-dexistence-dadresse-mail)
     - [1. Code de vérification de l'adresse mail](#1-code-de-vérification-de-l-adresse-mail)
-    - [2. Erreurs et Gestion des Réponses](#2-erreurs-et-gestion-des-réponses)
+    - [2. Erreurs et Gestion des Réponses n°1](#2-erreurs-et-gestion-des-réponses-n1)
 - [III - Liste des mots de passe courants](#iii---liste-des-mots-de-passe-courants)
+    - [1. Code de recherche de mot de passe](#1-code-de-recherche-de-mot-de-passe)
+    - [2. Erreurs et Gestion des Réponses n°2](#2-erreurs-et-gestion-des-réponses-n2)
 
 ---
 
@@ -134,7 +136,7 @@ Cette fonctionnalité vérifie si une adresse email existe réellement en se bas
 
 ## III - Liste des mots de passe courants
 
-### Code de recherche de mot de passe
+### 1. Code de recherche de mot de passe
 Cette fonctionnalité permet de vérifier si le mot de passe fait partie de la liste des 10k passwords les plus communs (à partir du fichier "**10k-most-common.txt**").
 -  Route : POST /check-password
 - Description : Vérification de l’existence d’une adresse email.
