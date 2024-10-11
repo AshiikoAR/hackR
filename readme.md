@@ -3,11 +3,11 @@
 ## Table des matières
 - [Installation de l'API HackR](#installation-de-lapi-hackr)
 - [I - Authentification](#i---authentification)
-    - [1. Obtenir un Token JWT](#1--obtenir-un-token-jwt)
-    - [2. Accès Sécurisé](#2--accès-sécurisé)
+    - [1. Obtenir un Token JWT](#1-obtenir-un-token-jwt)
+    - [2. Accès Sécurisé](#2-accès-sécurisé)
 - [II - Vérification d'existence d'adresse mail](#ii---vérification-dexistence-dadresse-mail)
-    - [1. Code de vérification de l'adresse mail](#1--code-de-vérification-de-l-adresse-mail)
-    - [2. Erreurs et Gestion des Réponses](#2--erreurs-et-gestion-des-réponses)
+    - [1. Code de vérification de l'adresse mail](#1-code-de-vérification-de-l-adresse-mail)
+    - [2. Erreurs et Gestion des Réponses](#2-erreurs-et-gestion-des-réponses)
 - [III - Liste des mots de passe courants](#iii---liste-des-mots-de-passe-courants)
 
 ---
