@@ -53,5 +53,55 @@
         "user": "admin",
         "action": "check-password",
         "details": "Mot de passe courant"
+    },
+    {
+        "user": "admin",
+        "action": "login",
+        "details": ""
+    },
+    {
+        "user": "admin",
+        "action": "check-password",
+        "details": "Mot de passe courant"
+    },
+    {
+        "user": "admin",
+        "action": "check-password",
+        "details": "Mot de passe courant"
+    },
+    {
+        "user": "admin",
+        "action": "check-password",
+        "details": "Mot de passe s\u00e9curis\u00e9"
+    },
+    {
+        "user": "admin",
+        "action": "check-password",
+        "details": "Mot de passe s\u00e9curis\u00e9"
+    },
+    {
+        "user": "admin",
+        "action": "check-password",
+        "details": "Mot de passe s\u00e9curis\u00e9"
+    },
+    {
+        "user": "admin",
+        "action": "check-password",
+        "details": "Mot de passe s\u00e9curis\u00e9"
+    },
+    {
+        "user": "admin",
+        "action": "check-password",
+        "details": "Mot de passe s\u00e9curis\u00e9"
+    },
+    {
+        "user": "admin",
+        "action": "check-password",
+        "details": "Mot de passe s\u00e9curis\u00e9"
+    },
+    {
+        "user": "admin",
+        "action": "check-password",
+        "details": "Mot de passe courant"
     }
 ]
