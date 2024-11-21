@@ -12,18 +12,16 @@ app = Flask(__name__)
 app.config["JWT_SECRET_KEY"] = "lorem_ipsum_dolor_sit_amet"
 jwt = JWTManager(app)
 
-# Route pour la documentation Swagger
-SWAGGER_URL = '/docs'  # URL pour accéder à la documentation
-API_URL = '/swagger.json'  # Lien vers le fichier swagger.json
-
+# Configuration pour la documentation Swagger
+SWAGGER_URL = '/docs'
+API_URL = '/swagger.json'
 swaggerui_blueprint = get_swaggerui_blueprint(
     SWAGGER_URL,
     API_URL,
-    config={  # Configuration Swagger UI
+    config={
         'app_name': "HackR API Documentation"
     }
 )
-
 app.register_blueprint(swaggerui_blueprint, url_prefix=SWAGGER_URL)
 
 # Servir le fichier swagger.json
@@ -34,7 +32,7 @@ def swagger_json():
 # Logs des actions utilisateurs (stockés en mémoire ou dans un fichier)
 LOG_FILE = 'logs.json'
 
-# Exemple d'utilisateur avec rôles (admin ou user)
+# Types d'utilisateurs avec rôles (admin ou user)
 USERS = {
     "admin": {"password": "password", "role": "admin"},
     "user": {"password": "password", "role": "user"}
@@ -69,6 +67,16 @@ def login():
 
 # Vérification du rôle de l'utilisateur
 def admin_required(f):
+    def wrapper(*args, **kwargs):
+        identity = get_jwt_identity()
+        if identity["role"] != "admin":
+            return jsonify({"msg": "Accès refusé, droits insuffisants"}), 403
+        return f(*args, **kwargs)
+    return wrapper
+
+# Vérification du rôle de l'utilisateur
+def admin_required(f):
+    @wraps(f)  # Utilisation de functools.wraps pour éviter les conflits
     def wrapper(*args, **kwargs):
         identity = get_jwt_identity()
         if identity["role"] != "admin":
@@ -165,7 +173,7 @@ def check_password():
     if not password:
         return jsonify({"msg": "Mot de passe manquant"}), 400
 
-    # Charger la liste des mots de passe courants depuis le fichier texte
+    # Chargement de la liste des mots de passe courants depuis un fichier texte
     common_passwords_file = "10k-most-common.txt"
     
     try:
@@ -181,15 +189,31 @@ def check_password():
         log_action(username, "check-password", "Mot de passe sécurisé")
         return jsonify({"msg": "Le mot de passe est sécurisé (non trouvé dans la liste des mots de passe courants)."}), 200
 
-# Vérification du rôle de l'utilisateur
-def admin_required(f):
-    @wraps(f)  # Utilisation de functools.wraps pour éviter les conflits
-    def wrapper(*args, **kwargs):
-        identity = get_jwt_identity()
-        if identity["role"] != "admin":
-            return jsonify({"msg": "Accès refusé, droits insuffisants"}), 403
-        return f(*args, **kwargs)
-    return wrapper
+# Route pour récupérer les domaines et sous-domaines d'un domaine donné
+@app.route("/get-domains", methods=["POST"])
+@jwt_required()
+def get_domains():
+    domain = request.json.get("domain", None)
+    username = get_jwt_identity()["username"]
+
+    if not domain:
+        return jsonify({"msg": "Nom de domaine manquant"}), 400
+
+    # Utilisation de l'API SecurityTrails (ou autre service de renseignement de domaines)
+    api_key = "HywSt8KrfSkeufDTYXg80MWOeulw4mYU"  # Remplacez par votre clé API SecurityTrails
+    headers = {
+        "APIKEY": api_key
+    }
+    response = requests.get(f"https://api.securitytrails.com/v1/domain/{domain}/subdomains", headers=headers)
+
+    if response.status_code == 200:
+        data = response.json()
+        subdomains = data.get("subdomains", [])
+        domains_with_subdomains = [f"{sub}.{domain}" for sub in subdomains]
+        log_action(username, "get-domains", f"Domain: {domain}")
+        return jsonify({"domain": domain, "subdomains": domains_with_subdomains})
+    else:
+        return jsonify({"msg": "Erreur lors de la récupération des sous-domaines"}), response.status_code
 
 # Route pour voir les logs (réservée aux admins)
 @app.route("/logs", methods=["GET"])

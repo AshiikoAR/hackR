@@ -103,5 +103,60 @@
         "user": "admin",
         "action": "check-password",
         "details": "Mot de passe courant"
+    },
+    {
+        "user": "admin",
+        "action": "login",
+        "details": ""
+    },
+    {
+        "user": "admin",
+        "action": "check-email",
+        "details": "email: alexandre.raguin49@gmail.com"
+    },
+    {
+        "user": "admin",
+        "action": "check-password",
+        "details": "Mot de passe courant"
+    },
+    {
+        "user": "admin",
+        "action": "check-password",
+        "details": "Mot de passe courant"
+    },
+    {
+        "user": "admin",
+        "action": "login",
+        "details": ""
+    },
+    {
+        "user": "admin",
+        "action": "check-email",
+        "details": "email: alexandre.raguin49@gmail.com"
+    },
+    {
+        "user": "admin",
+        "action": "check-password",
+        "details": "Mot de passe courant"
+    },
+    {
+        "user": "admin",
+        "action": "login",
+        "details": ""
+    },
+    {
+        "user": "admin",
+        "action": "get-domains",
+        "details": "Domain: google.com"
+    },
+    {
+        "user": "admin",
+        "action": "get-domains",
+        "details": "Domain: life-management.fr"
+    },
+    {
+        "user": "admin",
+        "action": "get-domains",
+        "details": "Domain: kevinniel.fr"
     }
 ]
