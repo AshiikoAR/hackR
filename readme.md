@@ -47,7 +47,7 @@ pip install -r requirements.txt
 python app.py
 ```
 
-> L’API sera maintenant disponible à l’adresse https://localhost:5000.
+> L’API sera maintenant disponible à l’adresse https://127.0.0.1:5000.
 
 **Technologies utilisées**
 - **Flask** : Framework web léger pour Python.
@@ -70,7 +70,7 @@ python app.py
 Avant d’utiliser l’API, vous devez vous authentifier pour recevoir un token JWT, qui vous permettra d’accéder aux fonctionnalités sécurisées.
 - Route : POST /login
 - Description : Authentification avec un nom d’utilisateur et un mot de passe pour obtenir un token JWT.
-- URL : http://localhost:5000/login
+- URL : http://127.0.0.1:5000/login
 - Méthode : POST
 - Body (JSON) :
 ```json
@@ -103,7 +103,7 @@ Authorization: Bearer <votre_token_jwt>
 Cette fonctionnalité vérifie si une adresse email existe réellement en se basant sur des services externes comme Hunter.io. Elle renvoie également un score de fiabilité de l’adresse.
 -  Route : POST /check-email
 - Description : Vérification de l’existence d’une adresse email.
-- URL : http://localhost:5000/check-email
+- URL : http://127.0.0.1:5000/check-email
 - Méthode : POST
 - Headers : /
 - Authorization: Bearer <votre_token_jwt>
@@ -149,7 +149,7 @@ Cette fonctionnalité vérifie si une adresse email existe réellement en se bas
 Cette fonctionnalité permet de vérifier si le mot de passe fait partie de la liste des 10k passwords les plus communs (à partir du fichier "**10k-most-common.txt**").
 -  Route : POST /check-password
 - Description : Vérification de l’existence d’une adresse email.
-- URL : http://localhost:5000/check-password
+- URL : http://127.0.0.1:5000/check-password
 - Méthode : POST
 - Headers : /
 - Authorization: Bearer <votre_token_jwt>
@@ -197,7 +197,7 @@ Cette fonctionnalité permet de vérifier si le mot de passe fait partie de la l
 Cette fonctionnalité permet d'envoyer un grand nombre d'emails à une adresse spécifique.
 -  Route : POST /spam-email
 - Description : Envoi de spams à une adresse email.
-- URL : http://localhost:5000/spam-email
+- URL : http://127.0.0.1:5000/spam-email
 - Méthode : POST
 - Headers : /
 - Authorization: Bearer <votre_token_jwt>
@@ -251,7 +251,7 @@ Cette fonctionnalité permet d'envoyer un grand nombre d'emails à une adresse s
 Cette fonctionnalité permet de récupérer les sous-domaines d'un domaine spécifique.
 -  Route : POST /get-subdomains
 - Description : Récupération des sous-domaines d'un domaine.
-- URL : http://localhost:5000/get-subdomains
+- URL : http://127.0.0.1:5000/get-subdomains
 - Méthode : POST
 - Headers : /
 - Authorization: Bearer <votre_token_jwt>
@@ -295,7 +295,7 @@ Cette fonctionnalité permet de récupérer les sous-domaines d'un domaine spéc
 Cette fonctionnalité permet de générer une page de phishing pour un domaine spécifique.
 -  Route : POST /generate-phishing-page
 - Description : Génération d'une page de phishing.
-- URL : http://localhost:5000/generate-phishing-page
+- URL : http://127.0.0.1:5000/generate-phishing-page
 - Méthode : POST
 - Headers : /
 - Authorization: Bearer <votre_token_jwt>
