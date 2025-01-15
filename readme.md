@@ -2,6 +2,7 @@
 
 ## Table des matières
 - [Installation de l'API HackR](#installation-de-lapi-hackr)
+- [Utiliser l'API directement](#utiliser-lapi-directement)
 - [I - Authentification](#i---authentification)
     - [1. Obtenir un Token JWT](#1-obtenir-un-token-jwt)
     - [2. Accès Sécurisé](#2-accès-sécurisé)
@@ -75,6 +76,12 @@ python app.py
 > Vous pouvez tester toutes les routes avec Postman, un exemple ci-dessous :
 > - Effectuer une requête POST sur /login pour obtenir un token JWT.
 > - Utiliser le token dans les headers sous Authorization: Bearer <votre_token> pour accéder aux autres routes.
+
+---
+
+## Utiliser l'API directement
+
+Vous pouvez utiliser l'API directement via des requêtes POST/GET car elle est disponible à cette URL : "http://31.207.38.67:5000".
 
 ---
 
