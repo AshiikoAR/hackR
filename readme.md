@@ -32,6 +32,9 @@
 - [X - Crawler des informations sur une personne](#x---crawler-des-informations-sur-une-personne)
     - [1. Code pour crawler des informations sur une personne](#1-code-pour-crawler-des-informations-sur-une-personne)
     - [2. Erreurs et Gestion des Réponses n°9](#2-erreurs-et-gestion-des-réponses-n9)
+- [XI - Obtenir une image aléatoire](#xi---obtenir-une-image-aléatoire)
+    - [1. Code pour obtenir une image aléatoire](#1-code-pour-obtenir-une-image-aléatoire)
+    - [2. Erreurs et Gestion des Réponses n°10](#2-erreurs-et-gestion-des-réponses-n10)
 
 ---
 
@@ -478,4 +481,28 @@ Cette fonctionnalité permet de crawler des informations sur une personne en uti
 - Réponse (JSON) :
 ```json
 {
-  "msg": "Prénom
+  "msg": "Prénom manquant"
+}
+```
+
+## XI - Obtenir une image aléatoire
+
+### 1. Code pour obtenir une image aléatoire
+Cette fonctionnalité permet d'obtenir une image aléatoire.
+-  Route : GET /random-image
+- Description : Obtenir une image aléatoire.
+- URL : http://127.0.0.1:5000/random-image
+- Méthode : GET
+- Headers : /
+- Authorization: Bearer <votre_token_jwt>
+- Réponse : Image aléatoire.
+
+### 2. Erreurs et Gestion des Réponses n°10
+
+> Si une erreur se produit lors de la récupération de l'image :
+- Réponse (JSON) :
+```json
+{
+  "msg": "Erreur lors de la récupération de l'image"
+}
+```

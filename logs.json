@@ -348,5 +348,30 @@
         "user": "admin",
         "action": "ddos",
         "details": "target_url: kevinniel.fr, num_requests: 10000"
+    },
+    {
+        "user": "admin",
+        "action": "login",
+        "details": ""
+    },
+    {
+        "user": "admin",
+        "action": "check-email",
+        "details": "email: alexandre.raguin49@gmail.com, result: risky"
+    },
+    {
+        "user": "admin",
+        "action": "send-spam",
+        "details": "2 emails envoy\u00e9s \u00e0 bietrix.romuald@orange.fr"
+    },
+    {
+        "user": "admin",
+        "action": "check-password",
+        "details": "Mot de passe courant"
+    },
+    {
+        "user": "admin",
+        "action": "check-password",
+        "details": "Mot de passe s\u00e9curis\u00e9"
     }
 ]
