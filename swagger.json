@@ -1,193 +1,395 @@
 {
     "swagger": "2.0",
     "info": {
-      "description": "API de 'Hacking' permettant : La vérification des emails, le spam d'emails, la vérification de la sécurité des mots de passe, et la récupération de sous-domaines.",
-      "version": "1.0.0",
-      "title": "HackR API",
-      "contact": {
-        "email": "alexandre.raguin49@my-digital-school.org"
-      }
+        "title": "HackR API",
+        "description": "API pour diverses opérations de sécurité",
+        "version": "1.0.0"
     },
     "host": "127.0.0.1:5000",
     "basePath": "/",
     "schemes": ["http"],
     "paths": {
-      "/login": {
-        "post": {
-          "summary": "Obtenir un token JWT",
-          "description": "Authentification utilisateur pour obtenir un token JWT.",
-          "parameters": [
-            {
-              "name": "body",
-              "in": "body",
-              "description": "Nom d'utilisateur et mot de passe",
-              "required": true,
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "username": { "type": "string" },
-                  "password": { "type": "string" }
+        "/login": {
+            "post": {
+                "summary": "Authentification utilisateur",
+                "description": "Obtenir un token JWT",
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "username": {"type": "string"},
+                                "password": {"type": "string"}
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {"description": "Token JWT généré"},
+                    "401": {"description": "Identifiants incorrects"}
                 }
-              }
             }
-          ],
-          "responses": {
-            "200": { "description": "Token JWT" },
-            "401": { "description": "Identifiants incorrects" }
-          }
-        }
-      },
-      "/check-email": {
-        "post": {
-          "summary": "Vérifier l'existence d'un email",
-          "description": "Vérifie si un email existe via l'API Hunter.io.",
-          "parameters": [
-            {
-              "name": "Authorization",
-              "in": "header",
-              "description": "Token JWT",
-              "required": true,
-              "type": "string"
-            },
-            {
-              "name": "body",
-              "in": "body",
-              "description": "Adresse email à vérifier",
-              "required": true,
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "email": { "type": "string" }
+        },
+        "/check-email": {
+            "post": {
+                "summary": "Vérifier l'existence d'un email",
+                "description": "Utilise l'API Hunter.io pour vérifier l'existence d'un email",
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "Token JWT",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "email": {"type": "string"}
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {"description": "Résultat de la vérification"},
+                    "400": {"description": "Adresse email manquante"},
+                    "500": {"description": "Erreur lors de la vérification"}
                 }
-              }
             }
-          ],
-          "responses": {
-            "200": { "description": "Détails sur l'existence de l'email" },
-            "400": { "description": "Adresse email manquante" },
-            "500": { "description": "Erreur lors de la vérification" }
-          }
-        }
-      },
-      "/send-spam": {
-        "post": {
-          "summary": "Envoyer des emails en masse (admin uniquement)",
-          "description": "Envoie plusieurs emails à une adresse donnée (réservé aux administrateurs).",
-          "parameters": [
-            {
-              "name": "Authorization",
-              "in": "header",
-              "description": "Token JWT",
-              "required": true,
-              "type": "string"
-            },
-            {
-              "name": "body",
-              "in": "body",
-              "description": "Détails de l'email à envoyer",
-              "required": true,
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "email": { "type": "string" },
-                  "subject": { "type": "string", "example": "Spam Subject" },
-                  "content": { "type": "string", "example": "This is a spam email." },
-                  "num_emails": { "type": "integer", "example": 1 }
+        },
+        "/send-spam": {
+            "post": {
+                "summary": "Envoyer des emails en masse (admin uniquement)",
+                "description": "Envoie plusieurs emails à une adresse donnée (réservé aux administrateurs).",
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "Token JWT",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "description": "Détails de l'email à envoyer",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "email": { "type": "string" },
+                                "subject": { "type": "string", "example": "Spam Subject" },
+                                "content": { "type": "string", "example": "This is a spam email." },
+                                "num_emails": { "type": "integer", "example": 1 }
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": { "description": "Emails envoyés avec succès" },
+                    "403": { "description": "Accès refusé" },
+                    "400": { "description": "Données manquantes" },
+                    "500": { "description": "Erreur d'envoi" }
                 }
-              }
             }
-          ],
-          "responses": {
-            "200": { "description": "Emails envoyés avec succès" },
-            "403": { "description": "Accès refusé" },
-            "400": { "description": "Données manquantes" },
-            "500": { "description": "Erreur d'envoi" }
-          }
-        }
-      },
-      "/check-password": {
-        "post": {
-          "summary": "Vérifier si un mot de passe est commun",
-          "description": "Vérifie si un mot de passe est dans la liste des mots de passe les plus communs.",
-          "parameters": [
-            {
-              "name": "Authorization",
-              "in": "header",
-              "description": "Token JWT",
-              "required": true,
-              "type": "string"
-            },
-            {
-              "name": "body",
-              "in": "body",
-              "description": "Mot de passe à vérifier",
-              "required": true,
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "password": { "type": "string" }
+        },
+        "/check-password": {
+            "post": {
+                "summary": "Vérifier si un mot de passe est commun",
+                "description": "Vérifie si un mot de passe est dans la liste des mots de passe les plus communs.",
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "Token JWT",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "description": "Mot de passe à vérifier",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "password": { "type": "string" }
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": { "description": "Le mot de passe est sécurisé ou non" },
+                    "400": { "description": "Mot de passe manquant" },
+                    "500": { "description": "Erreur de vérification" }
                 }
-              }
             }
-          ],
-          "responses": {
-            "200": { "description": "Le mot de passe est sécurisé ou non" },
-            "400": { "description": "Mot de passe manquant" },
-            "500": { "description": "Erreur de vérification" }
-          }
-        }
-      },
-      "/get-domains": {
-        "post": {
-          "summary": "Récupérer les sous-domaines d'un domaine",
-          "description": "Retourne tous les sous-domaines d'un domaine via l'API SecurityTrails.",
-          "parameters": [
-            {
-              "name": "Authorization",
-              "in": "header",
-              "description": "Token JWT",
-              "required": true,
-              "type": "string"
-            },
-            {
-              "name": "body",
-              "in": "body",
-              "description": "Nom de domaine",
-              "required": true,
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "domain": { "type": "string" }
+        },
+        "/get-domains": {
+            "post": {
+                "summary": "Récupérer les sous-domaines d'un domaine",
+                "description": "Retourne tous les sous-domaines d'un domaine via l'API SecurityTrails.",
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "Token JWT",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "description": "Nom de domaine",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "domain": { "type": "string" }
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": { "description": "Liste des sous-domaines" },
+                    "400": { "description": "Nom de domaine manquant" },
+                    "500": { "description": "Erreur lors de la récupération des sous-domaines" }
                 }
-              }
             }
-          ],
-          "responses": {
-            "200": { "description": "Liste des sous-domaines" },
-            "400": { "description": "Nom de domaine manquant" },
-            "500": { "description": "Erreur lors de la récupération des sous-domaines" }
-          }
-        }
-      },
-      "/logs": {
-        "get": {
-          "summary": "Afficher les logs (admin uniquement)",
-          "description": "Retourne les logs des actions réalisées, accessible uniquement aux admins.",
-          "parameters": [
-            {
-              "name": "Authorization",
-              "in": "header",
-              "description": "Token JWT",
-              "required": true,
-              "type": "string"
+        },
+        "/logs": {
+            "get": {
+                "summary": "Afficher les logs (admin uniquement)",
+                "description": "Retourne les logs des actions réalisées, accessible uniquement aux admins.",
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "Token JWT",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": { "description": "Logs des actions" },
+                    "403": { "description": "Accès refusé" },
+                    "404": { "description": "Aucun log trouvé" }
+                }
             }
-          ],
-          "responses": {
-            "200": { "description": "Logs des actions" },
-            "403": { "description": "Accès refusé" },
-            "404": { "description": "Aucun log trouvé" }
-          }
+        },
+        "/logs/user/{username}": {
+            "get": {
+                "summary": "Afficher les logs d'un utilisateur spécifique (admin uniquement)",
+                "description": "Retourne les logs des actions réalisées par un utilisateur spécifique, accessible uniquement aux admins.",
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "Token JWT",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "username",
+                        "in": "path",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": { "description": "Logs des actions de l'utilisateur" },
+                    "403": { "description": "Accès refusé" },
+                    "404": { "description": "Aucun log trouvé" }
+                }
+            }
+        },
+        "/logs/action/{action}": {
+            "get": {
+                "summary": "Afficher les logs d'une action spécifique (admin uniquement)",
+                "description": "Retourne les logs des actions spécifiques, accessible uniquement aux admins.",
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "Token JWT",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "action",
+                        "in": "path",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": { "description": "Logs des actions spécifiques" },
+                    "403": { "description": "Accès refusé" },
+                    "404": { "description": "Aucun log trouvé" }
+                }
+            }
+        },
+        "/create-phishing-page": {
+            "post": {
+                "summary": "Créer une page de phishing (admin uniquement)",
+                "description": "Génère une page de phishing pour une cible spécifique (réservé aux administrateurs).",
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "Token JWT",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "description": "Détails de la cible",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "target": { "type": "string" }
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": { "description": "Page de phishing générée" },
+                    "403": { "description": "Accès refusé" },
+                    "400": { "description": "Cible manquante" }
+                }
+            }
+        },
+        "/ddos": {
+            "post": {
+                "summary": "Lancer une attaque DDoS (admin uniquement)",
+                "description": "Lance une attaque DDoS sur une URL cible (réservé aux administrateurs).",
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "Token JWT",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "description": "Détails de l'attaque",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "target_url": { "type": "string" },
+                                "num_requests": { "type": "integer", "example": 100 }
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": { "description": "Attaque DDoS lancée" },
+                    "403": { "description": "Accès refusé" },
+                    "400": { "description": "URL cible manquante" }
+                }
+            }
+        },
+        "/random-image": {
+            "get": {
+                "summary": "Changer une image de manière aléatoire",
+                "description": "Retourne une image aléatoire.",
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "Token JWT",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": { "description": "Image aléatoire retournée" },
+                    "403": { "description": "Accès refusé" }
+                }
+            }
+        },
+        "/generate-identity": {
+            "get": {
+                "summary": "Générer une identité fictive",
+                "description": "Génère une identité fictive.",
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "Token JWT",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": { "description": "Identité fictive générée" },
+                    "403": { "description": "Accès refusé" }
+                }
+            }
+        },
+        "/crawl-info": {
+            "post": {
+                "summary": "Crawler des informations sur une personne",
+                "description": "Retourne des informations fictives sur une personne à partir de son prénom et nom.",
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "Token JWT",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "description": "Détails de la personne",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "first_name": { "type": "string" },
+                                "last_name": { "type": "string" }
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": { "description": "Informations fictives retournées" },
+                    "403": { "description": "Accès refusé" },
+                    "400": { "description": "Prénom et nom manquants" }
+                }
+            }
+        },
+        "/generate-password": {
+            "get": {
+                "summary": "Générer un mot de passe sécurisé",
+                "description": "Génère un mot de passe sécurisé.",
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "Token JWT",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": { "description": "Mot de passe sécurisé généré" },
+                    "403": { "description": "Accès refusé" }
+                }
+            }
         }
-      }
     }
-  }
+}

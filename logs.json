@@ -158,5 +158,30 @@
         "user": "admin",
         "action": "get-domains",
         "details": "Domain: kevinniel.fr"
+    },
+    {
+        "user": "admin",
+        "action": "login",
+        "details": ""
+    },
+    {
+        "user": "admin",
+        "action": "login",
+        "details": ""
+    },
+    {
+        "user": "admin",
+        "action": "login",
+        "details": ""
+    },
+    {
+        "user": "admin",
+        "action": "login",
+        "details": ""
+    },
+    {
+        "user": "admin",
+        "action": "login",
+        "details": ""
     }
 ]

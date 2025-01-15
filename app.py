@@ -1,12 +1,16 @@
 from flask import Flask, request, jsonify, send_from_directory
 from flask_jwt_extended import (JWTManager, create_access_token, jwt_required, get_jwt_identity)
 from flask_swagger_ui import get_swaggerui_blueprint
+from flask_cors import CORS
 import requests
 import json
 import os
 from functools import wraps
+from faker import Faker
+import random
 
 app = Flask(__name__)
+CORS(app)
 
 # Configuration du secret pour JWT
 app.config["JWT_SECRET_KEY"] = "lorem_ipsum_dolor_sit_amet"
@@ -26,7 +30,7 @@ app.register_blueprint(swaggerui_blueprint, url_prefix=SWAGGER_URL)
 
 # Servir le fichier swagger.json
 @app.route("/swagger.json")
-def swagger_json():
+def serve_swagger_json():
     return send_from_directory(os.getcwd(), "swagger.json")
 
 # Logs des actions utilisateurs (stockés en mémoire ou dans un fichier)
@@ -89,6 +93,9 @@ def admin_required(f):
 @jwt_required()  # Nécessite un token JWT valide
 def check_email():
     email = request.json.get("email", None)
+    if not isinstance(email, str):
+        return jsonify({"msg": "Email must be a string"}), 422
+
     apikey = "cb800f605f6c28261560328efd4c8d6366eeeaa6"  # Clé API Hunter.io
     username = get_jwt_identity()["username"]
 
@@ -226,6 +233,166 @@ def view_logs():
         return jsonify(logs)
     except FileNotFoundError:
         return jsonify({"msg": "Aucun log trouvé"}), 404
+
+# Route pour obtenir les logs des dernières actions d'un utilisateur spécifique
+@app.route("/logs/user/<username>", methods=["GET"])
+@jwt_required()
+@admin_required
+def view_user_logs(username):
+    try:
+        with open(LOG_FILE, 'r') as file:
+            logs = json.load(file)
+        user_logs = [log for log in logs if log["user"] == username]
+        return jsonify(user_logs)
+    except FileNotFoundError:
+        return jsonify({"msg": "Aucun log trouvé"}), 404
+
+# Route pour obtenir les logs des dernières actions d'une fonctionnalité spécifique
+@app.route("/logs/action/<action>", methods=["GET"])
+@jwt_required()
+@admin_required
+def view_action_logs(action):
+    try:
+        with open(LOG_FILE, 'r') as file:
+            logs = json.load(file)
+        action_logs = [log for log in logs if log["action"] == action]
+        return jsonify(action_logs)
+    except FileNotFoundError:
+        return jsonify({"msg": "Aucun log trouvé"}), 404
+
+fake = Faker()
+
+# Route pour générer une page de phishing (exemple simple)
+@app.route("/create-phishing-page", methods=["POST"])
+@jwt_required()
+@admin_required
+def create_phishing_page():
+    target = request.json.get("target", None)
+    username = get_jwt_identity()["username"]
+
+    if not target:
+        return jsonify({"msg": "Cible manquante"}), 400
+
+    phishing_page = f"<html><body><h1>Bienvenue {target}</h1><p>Veuillez entrer vos informations de connexion.</p></body></html>"
+    log_action(username, "create-phishing-page", f"target: {target}")
+    return jsonify({"phishing_page": phishing_page})
+
+# Route pour lancer une attaque DDoS (exemple simple)
+@app.route("/ddos", methods=["POST"])
+@jwt_required()
+@admin_required
+def ddos():
+    target_url = request.json.get("target_url", None)
+    num_requests = request.json.get("num_requests", 100)
+    username = get_jwt_identity()["username"]
+
+    if not target_url:
+        return jsonify({"msg": "URL cible manquante"}), 400
+
+    for _ in range(num_requests):
+        try:
+            requests.get(target_url)
+        except requests.RequestException:
+            pass
+
+    log_action(username, "ddos", f"target_url: {target_url}, num_requests: {num_requests}")
+    return jsonify({"msg": f"{num_requests} requêtes envoyées à {target_url}."})
+
+# Route pour changer une image de manière aléatoire
+@app.route("/random-image", methods=["GET"])
+@jwt_required()
+def random_image():
+    username = get_jwt_identity()["username"]
+    response = requests.get("https://picsum.photos/200")
+    log_action(username, "random-image")
+    return send_from_directory(os.getcwd(), response.url.split("/")[-1])
+
+# Route pour générer une identité fictive
+@app.route("/generate-identity", methods=["GET"])
+@jwt_required()
+def generate_identity():
+    username = get_jwt_identity()["username"]
+    identity = {
+        "name": fake.name(),
+        "address": fake.address(),
+        "email": fake.email(),
+        "job": fake.job()
+    }
+    log_action(username, "generate-identity")
+    return jsonify(identity)
+
+# Route pour crawler des informations sur une personne
+@app.route("/crawl-info", methods=["POST"])
+@jwt_required()
+def crawl_info():
+    first_name = request.json.get("first_name", None)
+    last_name = request.json.get("last_name", None)
+    username = get_jwt_identity()["username"]
+
+    if not first_name or not last_name:
+        return jsonify({"msg": "Prénom et nom manquants"}), 400
+
+    # Exemple simple de recherche d'informations (à remplacer par une vraie API)
+    info = {
+        "first_name": first_name,
+        "last_name": last_name,
+        "info": f"Informations fictives pour {first_name} {last_name}"
+    }
+    log_action(username, "crawl-info", f"first_name: {first_name}, last_name: {last_name}")
+    return jsonify(info)
+
+# Route pour générer un mot de passe sécurisé
+@app.route("/generate-password", methods=["GET"])
+@jwt_required()
+def generate_password():
+    username = get_jwt_identity()["username"]
+    password = fake.password(length=12, special_chars=True, digits=True, upper_case=True, lower_case=True)
+    log_action(username, "generate-password")
+    return jsonify({"password": password})
+
+# Swagger documentation
+swagger_template = {
+    "swagger": "2.0",
+    "info": {
+        "title": "HackR API",
+        "description": "API pour diverses opérations de sécurité",
+        "version": "1.0.0"
+    },
+    "host": "localhost:5000",
+    "basePath": "/",
+    "schemes": ["http"],
+    "paths": {
+        "/login": {
+            "post": {
+                "summary": "Authentification utilisateur",
+                "description": "Obtenir un token JWT",
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "required": True,
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "username": {"type": "string"},
+                                "password": {"type": "string"}
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {"description": "Token JWT généré"},
+                    "401": {"description": "Identifiants incorrects"}
+                }
+            }
+        },
+        # ...ajouter les autres routes ici...
+    }
+}
+
+@app.route("/swagger-docs.json")
+def swagger_json():
+    return jsonify(swagger_template)
 
 if __name__ == "__main__":
     app.run(debug=True)
