@@ -92,29 +92,36 @@ def admin_required(f):
 @app.route("/check-email", methods=["POST"])
 @jwt_required()  # Nécessite un token JWT valide
 def check_email():
-    email = request.json.get("email", None)
-    if not isinstance(email, str):
-        return jsonify({"msg": "Email must be a string"}), 422
+    # Récupérer l'email depuis le corps de la requête
+    email = request.json.get("email")
 
-    apikey = "cb800f605f6c28261560328efd4c8d6366eeeaa6"  # Clé API Hunter.io
-    username = get_jwt_identity()["username"]
+    # Vérifier que l'email est fourni et qu'il est une chaîne de caractères
+    if not email or not isinstance(email, str):
+        return jsonify({"msg": "Adresse email invalide ou manquante"}), 400
 
-    if not email:
-        return jsonify({"msg": "Adresse email manquante"}), 400
+    # Exemple de clé API pour Hunter.io (remplacez par la vôtre)
+    apikey = "cb800f605f6c28261560328efd4c8d6366eeeaa6"
 
-    # Utilisation de l'API Hunter.io 
+    # Vérification de l'email via l'API Hunter.io
     response = requests.get(f"https://api.hunter.io/v2/email-verifier?email={email}&api_key={apikey}")
-    
     if response.status_code == 200:
+        # Analyse de la réponse JSON de l'API
         data = response.json()
-        log_action(username, "check-email", f"email: {email}")
+        result = data.get("data", {}).get("result")
+        score = data.get("data", {}).get("score")
+
+        # Journaliser l'action (optionnel)
+        username = get_jwt_identity()["username"]
+        log_action(username, "check-email", f"email: {email}, result: {result}")
+
+        # Retourner les résultats de la vérification
         return jsonify({
             "email": email,
-            "existence": data.get("data").get("result"),
-            "score": data.get("data").get("score")
-        })
+            "existence": result,
+            "score": score
+        }), 200
     else:
-        return jsonify({"msg": "Erreur lors de la vérification"}), 500
+        return jsonify({"msg": "Erreur lors de la vérification de l'email"}), 500
 
 # Route pour spammer un email (admin uniquement)
 @app.route("/send-spam", methods=["POST"])
@@ -122,10 +129,13 @@ def check_email():
 @admin_required  # Réservé aux administrateurs
 def send_spam():
     email = request.json.get("email", None)
-    subject = request.json.get("subject", "Spam Subject")
-    content = request.json.get("content", "This is a spam email.")
+    subject = request.json.get("subject", None)
+    content = request.json.get("content", None)
     num_emails = request.json.get("num_emails", 1)
     username = get_jwt_identity()["username"]
+
+    if not isinstance(email, str) or not isinstance(subject, str) or not isinstance(content, str):
+        return jsonify({"msg": "Email, subject, et contenu doivent être des chaînes de caractères"}), 422
 
     if not email or not content or not subject:
         return jsonify({"msg": "Email, subject, et contenu sont requis"}), 400
@@ -175,6 +185,9 @@ def send_spam():
 @jwt_required()  # Nécessite un token JWT valide
 def check_password():
     password = request.json.get("password", None)
+    if not isinstance(password, str):
+        return jsonify({"msg": "Password must be a string"}), 422
+
     username = get_jwt_identity()["username"]
 
     if not password:
@@ -184,7 +197,7 @@ def check_password():
     common_passwords_file = "10k-most-common.txt"
     
     try:
-        with open(common_passwords_file, "r") as file:
+        with open(common_passwords_file, "r", encoding="utf-8") as file:
             common_passwords = file.read().splitlines()
     except FileNotFoundError:
         return jsonify({"msg": "Fichier des mots de passe courants introuvable"}), 500
@@ -201,6 +214,9 @@ def check_password():
 @jwt_required()
 def get_domains():
     domain = request.json.get("domain", None)
+    if not isinstance(domain, str):
+        return jsonify({"msg": "Domain must be a string"}), 422
+
     username = get_jwt_identity()["username"]
 
     if not domain:
@@ -228,19 +244,26 @@ def get_domains():
 @admin_required  # Réservé aux administrateurs
 def view_logs():
     try:
-        with open(LOG_FILE, 'r') as file:
+        with open(LOG_FILE, 'r', encoding="utf-8") as file:
             logs = json.load(file)
         return jsonify(logs)
     except FileNotFoundError:
         return jsonify({"msg": "Aucun log trouvé"}), 404
+    except json.JSONDecodeError:
+        return jsonify({"msg": "Erreur de décodage JSON dans le fichier de logs"}), 500
+    except UnicodeDecodeError:
+        return jsonify({"msg": "Erreur de décodage UTF-8 dans le fichier de logs"}), 500
 
 # Route pour obtenir les logs des dernières actions d'un utilisateur spécifique
 @app.route("/logs/user/<username>", methods=["GET"])
 @jwt_required()
 @admin_required
 def view_user_logs(username):
+    if not isinstance(username, str):
+        return jsonify({"msg": "Username must be a string"}), 422
+
     try:
-        with open(LOG_FILE, 'r') as file:
+        with open(LOG_FILE, 'r', encoding="utf-8") as file:
             logs = json.load(file)
         user_logs = [log for log in logs if log["user"] == username]
         return jsonify(user_logs)
@@ -252,8 +275,11 @@ def view_user_logs(username):
 @jwt_required()
 @admin_required
 def view_action_logs(action):
+    if not isinstance(action, str):
+        return jsonify({"msg": "Action must be a string"}), 422
+
     try:
-        with open(LOG_FILE, 'r') as file:
+        with open(LOG_FILE, 'r', encoding="utf-8") as file:
             logs = json.load(file)
         action_logs = [log for log in logs if log["action"] == action]
         return jsonify(action_logs)
@@ -268,6 +294,9 @@ fake = Faker()
 @admin_required
 def create_phishing_page():
     target = request.json.get("target", None)
+    if not isinstance(target, str):
+        return jsonify({"msg": "Target must be a string"}), 422
+
     username = get_jwt_identity()["username"]
 
     if not target:
@@ -283,7 +312,13 @@ def create_phishing_page():
 @admin_required
 def ddos():
     target_url = request.json.get("target_url", None)
+    if not isinstance(target_url, str):
+        return jsonify({"msg": "Target URL must be a string"}), 422
+
     num_requests = request.json.get("num_requests", 100)
+    if not isinstance(num_requests, int):
+        return jsonify({"msg": "Number of requests must be an integer"}), 422
+
     username = get_jwt_identity()["username"]
 
     if not target_url:
@@ -327,6 +362,9 @@ def generate_identity():
 def crawl_info():
     first_name = request.json.get("first_name", None)
     last_name = request.json.get("last_name", None)
+    if not isinstance(first_name, str) or not isinstance(last_name, str):
+        return jsonify({"msg": "First name and last name must be strings"}), 422
+
     username = get_jwt_identity()["username"]
 
     if not first_name or not last_name:

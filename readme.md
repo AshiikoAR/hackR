@@ -20,6 +20,18 @@
 - [VI - Générer une page de phishing](#vi---générer-une-page-de-phishing)
     - [1. Code pour générer une page de phishing](#1-code-pour-générer-une-page-de-phishing)
     - [2. Erreurs et Gestion des Réponses n°5](#2-erreurs-et-gestion-des-réponses-n5)
+- [VII - Générer une identité fictive](#vii---générer-une-identité-fictive)
+    - [1. Code pour générer une identité fictive](#1-code-pour-générer-une-identité-fictive)
+    - [2. Erreurs et Gestion des Réponses n°6](#2-erreurs-et-gestion-des-réponses-n6)
+- [VIII - Lancer une attaque DDoS](#viii---lancer-une-attaque-ddos)
+    - [1. Code pour lancer une attaque DDoS](#1-code-pour-lancer-une-attaque-ddos)
+    - [2. Erreurs et Gestion des Réponses n°7](#2-erreurs-et-gestion-des-réponses-n7)
+- [IX - Générer un mot de passe sécurisé](#ix---générer-un-mot-de-passe-sécurisé)
+    - [1. Code pour générer un mot de passe sécurisé](#1-code-pour-générer-un-mot-de-passe-sécurisé)
+    - [2. Erreurs et Gestion des Réponses n°8](#2-erreurs-et-gestion-des-réponses-n8)
+- [X - Crawler des informations sur une personne](#x---crawler-des-informations-sur-une-personne)
+    - [1. Code pour crawler des informations sur une personne](#1-code-pour-crawler-des-informations-sur-une-personne)
+    - [2. Erreurs et Gestion des Réponses n°9](#2-erreurs-et-gestion-des-réponses-n9)
 
 ---
 
@@ -195,9 +207,9 @@ Cette fonctionnalité permet de vérifier si le mot de passe fait partie de la l
 
 ### 1. Code pour spammer un email
 Cette fonctionnalité permet d'envoyer un grand nombre d'emails à une adresse spécifique.
--  Route : POST /spam-email
+-  Route : POST /send-spam
 - Description : Envoi de spams à une adresse email.
-- URL : http://127.0.0.1:5000/spam-email
+- URL : http://127.0.0.1:5000/send-spam
 - Méthode : POST
 - Headers : /
 - Authorization: Bearer <votre_token_jwt>
@@ -205,19 +217,21 @@ Cette fonctionnalité permet d'envoyer un grand nombre d'emails à une adresse s
 ```json
 {
   "email": "victim@example.com",
-  "message": "This is a spam message",
-  "count": 100
+  "subject": "This is a spam message",
+  "content": "Spam content",
+  "num_emails": 100
 }
 ```
 - Réponse (JSON) :
 ```json
 {
-  "msg": "100 emails have been sent to victim@example.com"
+  "msg": "100 emails envoyés avec succès à victim@example.com."
 }
 ```
 > **email** - Adresse email de la victime.
-> **message** - Contenu du message de spam.
-> **count** - Nombre d'emails à envoyer.
+> **subject** - Sujet du message de spam.
+> **content** - Contenu du message de spam.
+> **num_emails** - Nombre d'emails à envoyer.
 
 ### 2. Erreurs et Gestion des Réponses n°3
 
@@ -225,7 +239,7 @@ Cette fonctionnalité permet d'envoyer un grand nombre d'emails à une adresse s
 - Réponse (JSON) :
 ```json
 {
-  "msg": "Adresse email manquante"
+  "msg": "Email, subject, et contenu sont requis"
 }
 ```
 
@@ -233,7 +247,7 @@ Cette fonctionnalité permet d'envoyer un grand nombre d'emails à une adresse s
 - Réponse (JSON) :
 ```json
 {
-  "msg": "Message manquant"
+  "msg": "Email, subject, et contenu doivent être des chaînes de caractères"
 }
 ```
 
@@ -249,9 +263,9 @@ Cette fonctionnalité permet d'envoyer un grand nombre d'emails à une adresse s
 
 ### 1. Code pour récupérer les sous-domaines
 Cette fonctionnalité permet de récupérer les sous-domaines d'un domaine spécifique.
--  Route : POST /get-subdomains
+-  Route : POST /get-domains
 - Description : Récupération des sous-domaines d'un domaine.
-- URL : http://127.0.0.1:5000/get-subdomains
+- URL : http://127.0.0.1:5000/get-domains
 - Méthode : POST
 - Headers : /
 - Authorization: Bearer <votre_token_jwt>
@@ -273,11 +287,11 @@ Cette fonctionnalité permet de récupérer les sous-domaines d'un domaine spéc
 
 ### 2. Erreurs et Gestion des Réponses n°4
 
-> Si le domaine est manquant dans le corps de la requête :
+> Si le domaine est manquante dans le corps de la requête :
 - Réponse (JSON) :
 ```json
 {
-  "msg": "Domaine manquant"
+  "msg": "Nom de domaine manquant"
 }
 ```
 
@@ -292,51 +306,176 @@ Cette fonctionnalité permet de récupérer les sous-domaines d'un domaine spéc
 ## VI - Générer une page de phishing
 
 ### 1. Code pour générer une page de phishing
-Cette fonctionnalité permet de générer une page de phishing pour un domaine spécifique.
--  Route : POST /generate-phishing-page
+Cette fonctionnalité permet de générer une page de phishing pour une cible spécifique.
+-  Route : POST /create-phishing-page
 - Description : Génération d'une page de phishing.
-- URL : http://127.0.0.1:5000/generate-phishing-page
+- URL : http://127.0.0.1:5000/create-phishing-page
 - Méthode : POST
 - Headers : /
 - Authorization: Bearer <votre_token_jwt>
 - Body (JSON) :
 ```json
 {
-  "domain": "example.com",
-  "template": "login"
+  "target": "example_target"
 }
 ```
 - Réponse (JSON) :
 ```json
 {
-  "msg": "Phishing page generated for example.com using login template"
+  "phishing_page": "<html><body><h1>Bienvenue example_target</h1><p>Veuillez entrer vos informations de connexion.</p></body></html>"
 }
 ```
-> **domain** - Domaine pour lequel générer la page de phishing.
-> **template** - Modèle de page de phishing à utiliser.
+> **target** - Cible pour laquelle générer la page de phishing.
 
 ### 2. Erreurs et Gestion des Réponses n°5
 
-> Si le domaine est manquant dans le corps de la requête :
+> Si la cible est manquante dans le corps de la requête :
 - Réponse (JSON) :
 ```json
 {
-  "msg": "Domaine manquant"
+  "msg": "Cible manquante"
 }
 ```
 
-> Si le modèle de page de phishing est manquant dans le corps de la requête :
+## VII - Générer une identité fictive
+
+### 1. Code pour générer une identité fictive
+Cette fonctionnalité permet de générer une identité fictive.
+-  Route : GET /generate-identity
+- Description : Génération d'une identité fictive.
+- URL : http://127.0.0.1:5000/generate-identity
+- Méthode : GET
+- Headers : /
+- Authorization: Bearer <votre_token_jwt>
 - Réponse (JSON) :
 ```json
 {
-  "msg": "Modèle de page de phishing manquant"
+  "name": "John Doe",
+  "address": "123 Main St, Springfield, USA",
+  "email": "john.doe@example.com",
+  "job": "Software Engineer"
+}
+```
+> **name** - Nom fictif généré.
+> **address** - Adresse fictive générée.
+> **email** - Email fictif généré.
+> **job** - Profession fictive générée.
+
+### 2. Erreurs et Gestion des Réponses n°6
+
+> Si une erreur se produit lors de la génération de l'identité :
+- Réponse (JSON) :
+```json
+{
+  "msg": "Erreur lors de la génération de l'identité"
 }
 ```
 
-> Si une erreur se produit lors de la génération de la page de phishing :
+## VIII - Lancer une attaque DDoS
+
+### 1. Code pour lancer une attaque DDoS
+Cette fonctionnalité permet de lancer une attaque DDoS sur une URL cible.
+-  Route : POST /ddos
+- Description : Lancer une attaque DDoS.
+- URL : http://127.0.0.1:5000/ddos
+- Méthode : POST
+- Headers : /
+- Authorization: Bearer <votre_token_jwt>
+- Body (JSON) :
+```json
+{
+  "target_url": "http://example.com",
+  "num_requests": 100
+}
+```
 - Réponse (JSON) :
 ```json
 {
-  "msg": "Erreur lors de la génération de la page de phishing"
+  "msg": "100 requêtes envoyées à http://example.com."
 }
 ```
+> **target_url** - URL cible de l'attaque DDoS.
+> **num_requests** - Nombre de requêtes à envoyer.
+
+### 2. Erreurs et Gestion des Réponses n°7
+
+> Si l'URL cible est manquante dans le corps de la requête :
+- Réponse (JSON) :
+```json
+{
+  "msg": "URL cible manquante"
+}
+```
+
+> Si le nombre de requêtes est manquant ou invalide dans le corps de la requête :
+- Réponse (JSON) :
+```json
+{
+  "msg": "Number of requests must be an integer"
+}
+```
+
+## IX - Générer un mot de passe sécurisé
+
+### 1. Code pour générer un mot de passe sécurisé
+Cette fonctionnalité permet de générer un mot de passe sécurisé.
+-  Route : GET /generate-password
+- Description : Génération d'un mot de passe sécurisé.
+- URL : http://127.0.0.1:5000/generate-password
+- Méthode : GET
+- Headers : /
+- Authorization: Bearer <votre_token_jwt>
+- Réponse (JSON) :
+```json
+{
+  "password": "A1b2C3d4E5!"
+}
+```
+> **password** - Mot de passe sécurisé généré.
+
+### 2. Erreurs et Gestion des Réponses n°8
+
+> Si une erreur se produit lors de la génération du mot de passe :
+- Réponse (JSON) :
+```json
+{
+  "msg": "Erreur lors de la génération du mot de passe"
+}
+```
+
+## X - Crawler des informations sur une personne
+
+### 1. Code pour crawler des informations sur une personne
+Cette fonctionnalité permet de crawler des informations sur une personne en utilisant son prénom et son nom.
+-  Route : POST /crawl-info
+- Description : Crawler des informations sur une personne.
+- URL : http://127.0.0.1:5000/crawl-info
+- Méthode : POST
+- Headers : /
+- Authorization: Bearer <votre_token_jwt>
+- Body (JSON) :
+```json
+{
+  "first_name": "John",
+  "last_name": "Doe"
+}
+```
+- Réponse (JSON) :
+```json
+{
+  "first_name": "John",
+  "last_name": "Doe",
+  "info": "Informations fictives pour John Doe"
+}
+```
+> **first_name** - Prénom de la personne.
+> **last_name** - Nom de la personne.
+> **info** - Informations fictives récupérées.
+
+### 2. Erreurs et Gestion des Réponses n°9
+
+> Si le prénom ou le nom est manquant dans le corps de la requête :
+- Réponse (JSON) :
+```json
+{
+  "msg": "Prénom
